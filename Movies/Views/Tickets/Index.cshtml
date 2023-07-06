@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Movies.Models.Tickets>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<style>
+    .disabled{
+        color: gray;
+        pointer-events: none;
+        opacity: 0.2;
+    }
+</style>
+
+@if (User.IsInRole("Admin"))
+{   
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table id="DataTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumTickets)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td id="TicketNo">
+                @Html.DisplayFor(modelItem => item.NumTickets)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit |</a>
+                }
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete | </a>
+                }
+                <a asp-action="AddToCart" asp-route-id="@item.Id">Add to cart</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Excel">Download Excel</a>
+}
+
+
+@section Scripts {
+    @{
+        <script>
+            $(document).ready( () => {
+                $("#DataTable").DataTable({
+                    "paging": false,
+                    "ordering": true,
+                    "scrollCollapse": true,
+                    "searching": false,
+                    "columnDefs": [{ "targets": 3, "type": "date" }],
+                    "bInfo": true,
+                    "columnDefs": [
+                        { "orderable": false, "targets": 0 },
+                        { "orderable": false, "targets": 1 }
+                    ]
+                });
+            })
+            document.querySelectorAll("#TicketNo").forEach((item) => {
+                if (parseInt(item.innerHTML) == 0) {
+                    item.parentElement.style.opacity = "0.2";
+                    item.parentElement.querySelectorAll("a").forEach(tag => {
+                        tag.classList.add("disabled");
+                    })
+                }
+            })
+        </script>
+    }
+}

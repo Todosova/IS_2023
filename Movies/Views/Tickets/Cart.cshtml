@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Movies.Models.Cart>
+
+@{
+    ViewData["Title"] = "AddToCart";
+}
+
+<h1>AddToCart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.MovieTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ticket.Date)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ticket.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ticket.Genre)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Ticket.Author)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.Ticket.Date)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Remove Ticket</a> |
+                <a asp-action="BuyItem" asp-route-id="@item.Id" asp-route-TicketId="@item.TicketId" >Buy item</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<a asp-action="BuyAll">Buy All</a>

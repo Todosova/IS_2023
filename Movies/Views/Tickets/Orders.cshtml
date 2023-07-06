@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Movies.Models.Orders>
+
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+
+@{
+    Html.BeginForm("CreatePDFDocument", "Tickets", FormMethod.Get);
+    {
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FromCart)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FromCart.MovieTitle)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.TicketId">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+                <input type="submit" value="Create PDF Document" style="width:200px;height:27px" />
+        </div>
+        }
+        Html.EndForm();
+    }
+}
+
+<a asp-action="CreatePDFDocument">Get PDF document</a>
